@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 class IncomeCreate(BaseModel):
     label: str
-    income_desc: str
     amount: float
     is_recurring: bool
     recurrence: str
@@ -13,7 +12,6 @@ class IncomeOut(BaseModel):
     income_id: int
     user_id: int
     label: str
-    income_desc: str
     amount: float
     is_recurring: bool
     recurrence: str
