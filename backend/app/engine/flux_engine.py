@@ -5,25 +5,25 @@ def happens_on(entry, current_date: date) -> bool:
     if current_date < entry.start_date:
         return False
     
-    if entry.recurrence_interval is None:
-        return current_date == entry.start_date
+    if entry.recurrence == "Once":
+        return current_date == entry.start_date 
 
-    if entry.recurrence_interval == "Daily":
+    if entry.recurrence == "Daily":
         return True
 
-    if entry.recurrence_interval == "Weekly":
+    if entry.recurrence == "Weekly":
         return (current_date - entry.start_date).days % 7 == 0
 
-    if entry.recurrence_interval == "Monthly":
+    if entry.recurrence == "Monthly":
         last_day = calendar.monthrange(current_date.year, current_date.month)[1]
         target_day = min(entry.start_date.day, last_day)
         return current_date.day == target_day
 
-    if entry.recurrence_interval == "Yearly":
+    if entry.recurrence == "Yearly":
         return ((current_date.day == entry.start_date.day) and (current_date.month == entry.start_date.month))
 
-    if entry.recurrence_interval == "Custom":
-        return (current_date - entry.start_date).days % entry.recurrence_days == 0
+    if entry.recurrence == "Custom":
+        return (current_date - entry.start_date).days % entry.recurrence_interval == 0
 
     return False
 
