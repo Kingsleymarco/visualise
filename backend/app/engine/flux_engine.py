@@ -1,0 +1,58 @@
+import calendar
+from datetime import date
+
+def happens_on(entry, current_date: date) -> bool:
+    if current_date < entry.start_date:
+        return False
+    
+    if entry.recurrence_interval is None:
+        return current_date == entry.start_date
+
+    if entry.recurrence_interval == "Daily":
+        return True
+
+    if entry.recurrence_interval == "Weekly":
+        return (current_date - entry.start_date).days % 7 == 0
+
+    if entry.recurrence_interval == "Monthly":
+        last_day = calendar.monthrange(current_date.year, current_date.month)[1]
+        target_day = min(entry.start_date.day, last_day)
+        return current_date.day == target_day
+
+    if entry.recurrence_interval == "Yearly":
+        return ((current_date.day == entry.start_date.day) and (current_date.month == entry.start_date.month))
+
+    if entry.recurrence_interval == "Custom":
+        return (current_date - entry.start_date).days % entry.recurrence_days == 0
+
+    return False
+
+
+def calculate_forecast(incomes: list, expenses: list, month: str, starting_balance: float = 0):
+    year, month_int = map(int, month.split("-"))
+    num_days = calendar.monthrange(year, month_int)[1]
+
+    balance = starting_balance
+    balance_history = []
+    lowest_balance_day = None
+
+    for day in range(1, num_days + 1):
+        current_date = date(year, month_int, day)
+
+        for income_entry in incomes:
+            if happens_on(income_entry, current_date):
+                balance += float(income_entry.amount)
+
+        for expense_entry in expenses:
+            if happens_on(expense_entry, current_date):
+                balance -= float(expense_entry.amount)
+
+        balance_history.append({"date": current_date.isoformat(), "balance": balance})
+
+        if (lowest_balance_day is None) or (balance < lowest_balance_day["balance"]):
+            lowest_balance_day = {"date": current_date.isoformat(), "balance": balance}
+
+    return {
+        "balance_history": balance_history,
+        "lowest_balance_day": lowest_balance_day,
+    }
