@@ -1,4 +1,4 @@
-# visualise
+# Visualise
 Visualise is a personal cash-flow forecaster that helps users understand the flow of their money through income and expenses entries. By logging income and recurring expenses, the app simulates every day of the current month and provides the date in which the user's balance is lowest. Unlike other budget trackers, Visualise models overlapping billing cycles with recurrence types like daily, weekly, monthly, yearly, and custom intervals. This is to give an accurate picture of the financial situation of the user as to their net monthly total, monthly expenses and income.
 
 Tech Stack
@@ -54,4 +54,5 @@ Frontend runs at `http://localhost:5173`
 - Transaction event log showing every financial event per day
 - Donut charts showing income source breakdown and expense category breakdown
 
-Demo Video: 
+Demo Video: https://youtu.be/SWs7j-EoyGQ 
+Please switch the quality to 1080p.
